@@ -30,13 +30,10 @@ export const second_db: MysqlConnectionOptions = {
   database: 'nest_second',
   entities: ['dist/src/models/second_db/*.js'],
   migrations: ['dist/migration/**/*.js'],
-  logging: true,
   synchronize: true,
+  logging: false,
   cli: {
     entitiesDir: 'src/models/second_db',
     migrationsDir: 'src/migration',
-  },
-  extra: {
-    trustServerCertificate: true,
   },
 };

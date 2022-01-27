@@ -7,8 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ database: 'nest_first' })
-@Unique(['username'])
+@Entity({ database: 'nest_first'})
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;
