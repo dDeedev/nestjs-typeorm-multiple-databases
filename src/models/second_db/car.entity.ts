@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Employee } from './emp.entity';
 
-@Entity({ database: 'nest_second'})
+@Entity({ database: 'nest_second' })
 export class Car {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,8 +25,8 @@ export class Car {
   @Column()
   type: string;
 
-  @Column( "boolean" ,{default: false})
-  isCheckIn: boolean = false;
+  @Column('boolean', { default: false })
+  isCheckIn = false;
 
   @Column()
   zone: string;
@@ -40,6 +40,6 @@ export class Car {
   @UpdateDateColumn()
   update_at: Date;
 
-  @ManyToOne((type) => Employee, (emp) => emp.car)
+  @ManyToOne(() => Employee, (emp: Employee) => emp.car)
   emp: Employee;
 }

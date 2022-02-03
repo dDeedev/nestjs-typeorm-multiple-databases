@@ -1,24 +1,17 @@
-import { forwardRef, Inject, Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from '../../../models/second_db/car.entity';
 import { Repository } from 'typeorm';
+import { EmployeeService } from 'src/modules/employee/service/emp.service';
+import { Employee } from 'src/models/second_db/emp.entity';
 
-export  interface CarInterface {
-    id: number;
-    license_plate: string;
-    qrcode_id: string;
-    province: string;
-    type: string;
-    isCheckIn: boolean;
-    zone: string;
-    bay: string;
-}
 
 @Injectable()
 export class CarService {
   constructor(
     @InjectRepository(Car,'second')
-    private carRepository: Repository<Car>,
+    private readonly carRepository: Repository<Car>,
+    // private empService: EmployeeService
   ) {}
 
   async findAll(): Promise<Car[]> {
@@ -30,9 +23,9 @@ export class CarService {
     }
   }
 
-  async findOne(id: string): Promise<Car> {
+  async getOne(id: number): Promise<Car> {
     try {
-      const one_car = await this.carRepository.findOne(id);
+      const one_car = await this.carRepository.findOneOrFail(id);
       if (!one_car) {
         throw new HttpException(`No data`, HttpStatus.NOT_FOUND);
       }
@@ -42,9 +35,9 @@ export class CarService {
     }
   }
 
-  async remove(id: string): Promise<Car> {
+  async remove(id: number): Promise<Car> {
     try {
-        const car = await this.findOne(id);
+        const car = await this.getOne(id);
         if (!car) {
           throw new HttpException(`No data`, HttpStatus.NOT_FOUND);
         }
@@ -54,29 +47,31 @@ export class CarService {
     }
   }
 
-  async createCar(car: CarInterface): Promise<Car>{
+  async createCar(car: Car):Promise<Car>{
     try {
-        const new_car =  this.carRepository.create({
+        const new_car =  await this.carRepository.create({
                 license_plate : car.license_plate,
                 qrcode_id : car.qrcode_id,
                 province : car.province,
                 type : car.type,
                 isCheckIn : car.isCheckIn,
                 zone : car.zone,
-                bay : car.bay
+                bay : car.bay,
         })
         if (!new_car) {
           throw new HttpException(`Creating fail`, HttpStatus.NOT_FOUND);
         }
-        return this.carRepository.save(new_car);
+        // await this.empService.createEmployee(ca)
+        await this.carRepository.save(new_car);
+        return new_car
     } catch (err) {
       throw err;
     }
   }
 
-  async updateCar(id: string, car: CarInterface): Promise<Car> {
+  async updateCar(id: number, car: Car): Promise<Car> {
     try {
-        const car_id = await this.findOne(id);
+        const car_id = await this.getOne(id);
         if (!car_id) {
           throw new HttpException(`No data`, HttpStatus.NOT_FOUND);
         }else{

@@ -12,7 +12,7 @@ import { User } from '../../models/first_db/user.entity';
 @Module({
   imports: [
     // TypeOrmModule.forFeature([User],'second'),TypeOrmModule.forFeature([Employee],'default' )
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User], 'default'),
   ],
   providers: [UserService],
   controllers: [UserController],

@@ -1,23 +1,12 @@
-import {
-  Injectable,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../../models/first_db/user.entity';
 import { Repository } from 'typeorm';
 
-export interface UserInterface {
-  id: number;
-  username: string;
-  password: string;
-  role: string;
-}
-
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User,'default')
+    @InjectRepository(User, 'default')
     private userRepository: Repository<User>,
   ) {}
 
@@ -56,7 +45,7 @@ export class UserService {
     }
   }
 
-  async createUser(user: UserInterface): Promise<User> {
+  async createUser(user: User): Promise<User> {
     try {
       const new_user = await this.userRepository.create({
         username: user.username,
@@ -76,7 +65,7 @@ export class UserService {
     }
   }
 
-  async updateUser( id: number, user: UserInterface): Promise<User> {
+  async updateUser(id: number, user: User): Promise<User> {
     try {
       const user_id = await this.userRepository.findOne(id);
       if (!user_id) {
@@ -84,11 +73,10 @@ export class UserService {
           `ID not found`,
           HttpStatus.NON_AUTHORITATIVE_INFORMATION,
         );
-      }else {
-        this.userRepository.merge(user_id,user)
+      } else {
+        this.userRepository.merge(user_id, user);
         return this.userRepository.save(user_id);
       }
-
     } catch (err) {
       throw err;
     }

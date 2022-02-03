@@ -10,13 +10,13 @@ export const first_db: MysqlConnectionOptions = {
   username: 'root',
   password: '',
   database: 'nest_first',
-  entities: ['dist/src/models/first_db/*.js'],
+  entities: ['dist/models/first_db/*.js'],
   migrations: ['dist/migration/**/*.js'],
   synchronize: true,
   logging: false,
   cli: {
     entitiesDir: 'src/models/first_db',
-    migrationsDir: 'src/migration',
+    migrationsDir: 'src/migrations',
   },
 };
 
@@ -28,12 +28,12 @@ export const second_db: MysqlConnectionOptions = {
   username: 'root',
   password: '',
   database: 'nest_second',
-  entities: ['dist/src/models/second_db/*.js'],
+  entities: ['dist/models/second_db/*.js'],
   migrations: ['dist/migration/**/*.js'],
   synchronize: true,
   logging: false,
   cli: {
     entitiesDir: 'src/models/second_db',
-    migrationsDir: 'src/migration',
+    migrationsDir: 'src/migrations',
   },
 };

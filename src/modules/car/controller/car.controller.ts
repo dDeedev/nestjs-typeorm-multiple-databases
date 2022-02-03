@@ -6,10 +6,11 @@ import {
     Delete,
     Param,
     Controller,
+    Req,
   } from '@nestjs/common';
+import { Employee } from 'src/models/second_db/emp.entity';
   import { Car } from '../../../models/second_db/car.entity';
   import { CarService } from '../service/car.service';
-  import { CarInterface } from '../service/car.service';
   
   @Controller('cars')
   export class CarController {
@@ -26,22 +27,22 @@ import {
     }
   
     @Get(':id')
-    findOne(@Param()id: string): Promise<Car> {
-      return this.carService.findOne(id);
+    findOne(@Param() id: number): Promise<Car> {
+      return this.carService.getOne(id);
     }
   
     @Post('add')
-    createCar(@Body()car: CarInterface): Promise<Car> {
+    createCar(@Body() car: Car): Promise<Car> {
       return this.carService.createCar(car);
     }
   
     @Delete(':id')
-    remove(@Param()id: string): Promise<Car> {
+    remove(@Param() id: number): Promise<Car> {
       return this.carService.remove(id);
     }
   
     @Put(':id')
-    updateCar(@Param()id: string, @Body()car: CarInterface): Promise<Car> {
+    updateCar(@Param() id: number, @Body() car: Car): Promise<Car> {
       return this.carService.updateCar(id, car);
     }
   }

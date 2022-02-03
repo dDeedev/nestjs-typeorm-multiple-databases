@@ -6,11 +6,10 @@ import {
   Delete,
   Param,
   Controller,
-  Res
+  Res,
 } from '@nestjs/common';
 import { User } from '../../../models/first_db/user.entity';
 import { UserService } from '../service/user.service';
-import { UserInterface } from '../service/user.service';
 
 @Controller('users')
 export class UserController {
@@ -32,9 +31,8 @@ export class UserController {
   }
 
   @Post('add')
-  createUser(@Body() user: UserInterface): Promise<User> {
-      return this.userService.createUser(user);
-
+  createUser(@Body() user: User): Promise<User> {
+    return this.userService.createUser(user);
   }
 
   @Delete(':id')
@@ -43,7 +41,7 @@ export class UserController {
   }
 
   @Put(':id')
-  updateUser(@Param() id: number, @Body() user: UserInterface): Promise<User> {
+  updateUser(@Param() id: number, @Body() user: User): Promise<User> {
     return this.userService.updateUser(id, user);
   }
 }

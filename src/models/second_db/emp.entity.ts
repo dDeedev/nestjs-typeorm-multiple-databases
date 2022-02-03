@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 import { Car } from './car.entity';
 
-@Entity({  database: 'nest_second'})
-@Unique(['emp_id'])
+@Entity({ database: 'nest_second' })
+// @Unique(['emp_id'])
 export class Employee {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,10 +25,7 @@ export class Employee {
   name: string;
 
   @Column({ nullable: true })
-  date_issue: string;
-
-  @Column({ nullable: true })
-  location: string;
+  department: string;
 
   @CreateDateColumn()
   create_at: Date;
@@ -36,6 +33,6 @@ export class Employee {
   @UpdateDateColumn()
   update_at: Date;
 
-  @OneToMany((type) => Car, (car) => car.emp)
+  @OneToMany(() => Car, (car: Car) => car.emp)
   car: Car[];
 }
