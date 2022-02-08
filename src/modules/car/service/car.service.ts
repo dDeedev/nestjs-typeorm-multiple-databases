@@ -11,7 +11,7 @@ export class CarService {
   constructor(
     @InjectRepository(Car,'second')
     private readonly carRepository: Repository<Car>,
-    // private empService: EmployeeService
+    private empService: EmployeeService
   ) {}
 
   async findAll(): Promise<Car[]> {
@@ -47,21 +47,20 @@ export class CarService {
     }
   }
 
-  async createCar(car: Car):Promise<Car>{
+  async createCar(car: Car, employee:Employee){
     try {
-        const new_car =  await this.carRepository.create({
-                license_plate : car.license_plate,
-                qrcode_id : car.qrcode_id,
-                province : car.province,
-                type : car.type,
-                isCheckIn : car.isCheckIn,
-                zone : car.zone,
-                bay : car.bay,
-        })
+        const new_emp = await this.empService.createEmployee(employee)
+        const new_car =  new Car()
+        new_car.license_plate = car.license_plate
+        new_car.qrcode_id = car.qrcode_id
+        new_car.type = car.type
+        new_car.zone = car.zone
+        new_car.bay = car.bay
+        new_car.emp = new_emp
+
         if (!new_car) {
           throw new HttpException(`Creating fail`, HttpStatus.NOT_FOUND);
         }
-        // await this.empService.createEmployee(ca)
         await this.carRepository.save(new_car);
         return new_car
     } catch (err) {

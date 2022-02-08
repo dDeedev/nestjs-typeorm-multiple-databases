@@ -33,6 +33,6 @@ export class Employee {
   @UpdateDateColumn()
   update_at: Date;
 
-  @OneToMany(() => Car, (car: Car) => car.emp)
+  @OneToMany(() => Car, (car: Car) => car.emp,{cascade:true})
   car: Car[];
 }

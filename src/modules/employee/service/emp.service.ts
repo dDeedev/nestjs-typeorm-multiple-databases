@@ -2,15 +2,12 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from '../../../models/second_db/emp.entity';
 import { getRepository, Repository } from 'typeorm';
-import { Car } from 'src/models/second_db/car.entity';
-import { CarService } from 'src/modules/car/service/car.service';
 
 @Injectable()
 export class EmployeeService {
   constructor(
     @InjectRepository(Employee, 'second')
     private readonly employeeRepository: Repository<Employee>,
-    private carService: CarService,
   ) {}
 
   async findAll(): Promise<Employee[]> {
@@ -34,6 +31,15 @@ export class EmployeeService {
     }
   }
 
+  async getOnebyEmpId(emp_id: string): Promise<Employee> {
+    try {
+      const one_employee = await this.employeeRepository.findOne({where:{emp_id:emp_id}});
+      return one_employee;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async remove(id: number): Promise<Employee> {
     try {
       const employee = await this.getOne(id);
@@ -46,21 +52,26 @@ export class EmployeeService {
     }
   }
 
-  async createEmployee(employee: Employee, car: Car) {
+  async createEmployee(employee: Employee): Promise<Employee> {
     try {
-      const new_employee = await this.employeeRepository.create({
+      const emp = await this.getOnebyEmpId(employee.emp_id)
+      if(!emp){      
+        const new_employee = await this.employeeRepository.create({
         emp_id: employee.emp_id,
         card_id: employee.card_id,
         name: employee.name,
         department: employee.department,
-        car: employee.car,
       });
       if (!new_employee) {
         throw new HttpException(`Creating fail`, HttpStatus.NOT_FOUND);
       }
-      const new_car = await this.carService.createCar(car);
+
       await this.employeeRepository.save(new_employee);
       return new_employee;
+    }else{
+      return this.getOnebyEmpId(employee.emp_id)
+    }
+
     } catch (err) {
       throw err;
     }
@@ -77,7 +88,6 @@ export class EmployeeService {
           card_id: employee.card_id,
           name: employee.name,
           department: employee.department,
-          car: employee.car,
         });
         return this.employeeRepository.save(employee_id);
       }

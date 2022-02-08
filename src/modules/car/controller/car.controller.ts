@@ -1,4 +1,4 @@
-import {
+  import {
     Get,
     Post,
     Body,
@@ -8,10 +8,9 @@ import {
     Controller,
     Req,
   } from '@nestjs/common';
-import { Employee } from 'src/models/second_db/emp.entity';
+  import { Employee } from 'src/models/second_db/emp.entity';
   import { Car } from '../../../models/second_db/car.entity';
   import { CarService } from '../service/car.service';
-  
   @Controller('cars')
   export class CarController {
     constructor(private readonly carService: CarService) {}
@@ -30,10 +29,11 @@ import { Employee } from 'src/models/second_db/emp.entity';
     findOne(@Param() id: number): Promise<Car> {
       return this.carService.getOne(id);
     }
+    
   
     @Post('add')
-    createCar(@Body() car: Car): Promise<Car> {
-      return this.carService.createCar(car);
+    createCar(@Body() car: Car, @Req() emp:Employee) {
+      return this.carService.createCar(car,car.emp);
     }
   
     @Delete(':id')

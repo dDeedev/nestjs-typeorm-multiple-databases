@@ -10,8 +10,6 @@ import {
 } from '@nestjs/common';
 import { Employee } from '../../../models/second_db/emp.entity';
 import { EmployeeService } from '../service/emp.service';
-import { Car } from 'src/models/second_db/car.entity';
-//   import { EmployeeInterface } from '../service/emp.service';
 
 @Controller('emp')
 export class EmployeeController {
@@ -32,9 +30,14 @@ export class EmployeeController {
     return this.employeeService.getOne(id);
   }
 
+  @Get()
+  getByEmpId(@Body() employee: Employee): Promise<Employee> {
+    return this.employeeService.getOnebyEmpId(employee.emp_id);
+  }
+
   @Post('add')
-  createEmployee(@Body() employee: Employee, @Req() req: Car) {
-    return this.employeeService.createEmployee(employee, req);
+  createEmployee(@Body() employee: Employee) {
+    return this.employeeService.createEmployee(employee);
   }
 
   @Delete(':id')
