@@ -8,11 +8,12 @@ import { EmployeeService } from '../employee/service/emp.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Car],'second'),TypeOrmModule.forFeature([Employee],'second' )
+    TypeOrmModule.forFeature([Car], 'second'),
+    TypeOrmModule.forFeature([Employee], 'second'),
     // TypeOrmModule.forFeature([Car], 'second'),
   ],
   // providers: [CarService],
-   providers: [CarService, EmployeeService],
+  providers: [CarService, EmployeeService],
   controllers: [CarController],
   exports: [CarService],
 })

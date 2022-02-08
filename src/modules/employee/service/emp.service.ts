@@ -33,7 +33,9 @@ export class EmployeeService {
 
   async getOnebyEmpId(emp_id: string): Promise<Employee> {
     try {
-      const one_employee = await this.employeeRepository.findOne({where:{emp_id:emp_id}});
+      const one_employee = await this.employeeRepository.findOne({
+        where: { emp_id: emp_id },
+      });
       return one_employee;
     } catch (err) {
       throw err;
@@ -54,24 +56,23 @@ export class EmployeeService {
 
   async createEmployee(employee: Employee): Promise<Employee> {
     try {
-      const emp = await this.getOnebyEmpId(employee.emp_id)
-      if(!emp){      
+      const emp = await this.getOnebyEmpId(employee.emp_id);
+      if (!emp) {
         const new_employee = await this.employeeRepository.create({
-        emp_id: employee.emp_id,
-        card_id: employee.card_id,
-        name: employee.name,
-        department: employee.department,
-      });
-      if (!new_employee) {
-        throw new HttpException(`Creating fail`, HttpStatus.NOT_FOUND);
+          emp_id: employee.emp_id,
+          card_id: employee.card_id,
+          name: employee.name,
+          department: employee.department,
+        });
+        if (!new_employee) {
+          throw new HttpException(`Creating fail`, HttpStatus.NOT_FOUND);
+        }
+
+        await this.employeeRepository.save(new_employee);
+        return new_employee;
+      } else {
+        return this.getOnebyEmpId(employee.emp_id);
       }
-
-      await this.employeeRepository.save(new_employee);
-      return new_employee;
-    }else{
-      return this.getOnebyEmpId(employee.emp_id)
-    }
-
     } catch (err) {
       throw err;
     }

@@ -1,8 +1,7 @@
-import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
-// import { User } from './models/first_db/user.entity';
-// import { User2 } from './models/second_db/user.entity';
+// import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { ConnectionOptions } from 'typeorm'
 
-export const first_db: MysqlConnectionOptions = {
+export const first_db: ConnectionOptions = {
   name: 'default',
   type: 'mysql',
   host: 'localhost',
@@ -11,16 +10,16 @@ export const first_db: MysqlConnectionOptions = {
   password: '',
   database: 'nest_first',
   entities: ['dist/models/first_db/*.js'],
-  migrations: ['dist/migration/**/*.js'],
+  migrations: ['dist/migrations/*.js'],
   synchronize: true,
   logging: false,
   cli: {
     entitiesDir: 'src/models/first_db',
-    migrationsDir: 'src/migrations',
+    migrationsDir: 'src/migrations/',
   },
 };
 
-export const second_db: MysqlConnectionOptions = {
+export const second_db: ConnectionOptions = {
   name: 'second',
   type: 'mysql',
   host: 'localhost',
@@ -29,11 +28,13 @@ export const second_db: MysqlConnectionOptions = {
   password: '',
   database: 'nest_second',
   entities: ['dist/models/second_db/*.js'],
-  migrations: ['dist/migration/**/*.js'],
+  migrations: ['dist/migrations/*.js'],
   synchronize: true,
   logging: false,
   cli: {
     entitiesDir: 'src/models/second_db',
-    migrationsDir: 'src/migrations',
+    migrationsDir: 'src/migrations/',
   },
 };
+
+// module.exports = first_db,second_db ## discommend this line if you want to run migration

@@ -5,21 +5,20 @@ import { Repository } from 'typeorm';
 import { EmployeeService } from 'src/modules/employee/service/emp.service';
 import { Employee } from 'src/models/second_db/emp.entity';
 
-
 @Injectable()
 export class CarService {
   constructor(
-    @InjectRepository(Car,'second')
+    @InjectRepository(Car, 'second')
     private readonly carRepository: Repository<Car>,
-    private empService: EmployeeService
+    private empService: EmployeeService,
   ) {}
 
   async findAll(): Promise<Car[]> {
     try {
-        const all_car = await this.carRepository.find();
-        return all_car;
+      const all_car = await this.carRepository.find();
+      return all_car;
     } catch (err) {
-        return err;
+      return err;
     }
   }
 
@@ -37,32 +36,32 @@ export class CarService {
 
   async remove(id: number): Promise<Car> {
     try {
-        const car = await this.getOne(id);
-        if (!car) {
-          throw new HttpException(`No data`, HttpStatus.NOT_FOUND);
-        }
-        return this.carRepository.remove(car);
+      const car = await this.getOne(id);
+      if (!car) {
+        throw new HttpException(`No data`, HttpStatus.NOT_FOUND);
+      }
+      return this.carRepository.remove(car);
     } catch (err) {
       throw err;
     }
   }
 
-  async createCar(car: Car, employee:Employee){
+  async createCar(car: Car, employee: Employee) {
     try {
-        const new_emp = await this.empService.createEmployee(employee)
-        const new_car =  new Car()
-        new_car.license_plate = car.license_plate
-        new_car.qrcode_id = car.qrcode_id
-        new_car.type = car.type
-        new_car.zone = car.zone
-        new_car.bay = car.bay
-        new_car.emp = new_emp
+      const new_emp = await this.empService.createEmployee(employee);
+      const new_car = new Car();
+      new_car.license_plate = car.license_plate;
+      new_car.qrcode_id = car.qrcode_id;
+      new_car.type = car.type;
+      new_car.zone = car.zone;
+      new_car.bay = car.bay;
+      new_car.emp = new_emp;
 
-        if (!new_car) {
-          throw new HttpException(`Creating fail`, HttpStatus.NOT_FOUND);
-        }
-        await this.carRepository.save(new_car);
-        return new_car
+      if (!new_car) {
+        throw new HttpException(`Creating fail`, HttpStatus.NOT_FOUND);
+      }
+      await this.carRepository.save(new_car);
+      return new_car;
     } catch (err) {
       throw err;
     }
@@ -70,21 +69,21 @@ export class CarService {
 
   async updateCar(id: number, car: Car): Promise<Car> {
     try {
-        const car_id = await this.getOne(id);
-        if (!car_id) {
-          throw new HttpException(`No data`, HttpStatus.NOT_FOUND);
-        }else{
-                this.carRepository.merge(car_id,{
-                license_plate : car.license_plate,
-                qrcode_id : car.qrcode_id,
-                province : car.province,
-                type : car.type,
-                isCheckIn : car.isCheckIn,
-                zone : car.zone,
-                bay : car.bay
-            })
-            return this.carRepository.save(car_id);
-        }
+      const car_id = await this.getOne(id);
+      if (!car_id) {
+        throw new HttpException(`No data`, HttpStatus.NOT_FOUND);
+      } else {
+        this.carRepository.merge(car_id, {
+          license_plate: car.license_plate,
+          qrcode_id: car.qrcode_id,
+          province: car.province,
+          type: car.type,
+          isCheckIn: car.isCheckIn,
+          zone: car.zone,
+          bay: car.bay,
+        });
+        return this.carRepository.save(car_id);
+      }
     } catch (err) {
       throw err;
     }
