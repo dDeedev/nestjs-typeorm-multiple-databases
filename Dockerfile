@@ -1,9 +1,7 @@
 # Base image
 FROM node:16-alpine
 
-ENV MY_NAME="John Doe"
-ENV MY_DOG=Rex\ The\ Dog
-ENV MY_CAT=fluffy
+ENV MONGO_URL "mongodb://mongodb:27017"
 
 # Create app directory
 WORKDIR /home/app
