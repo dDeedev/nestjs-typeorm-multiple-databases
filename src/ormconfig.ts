@@ -3,9 +3,9 @@ import { ConnectionOptions } from 'typeorm'
 
 export const first_db: ConnectionOptions = {
   name: 'default',
-  type: 'mysql',
+  type: 'mongodb',
   host: process.env.DB1_HOST,
-  port: 3309,
+  port: parseInt(process.env.DB1_PORT) || 3306,
   username: process.env.DB1_USERNAME,
   password: process.env.DB1_PASSWORD,
   database: process.env.DB1_SCHEMA,
@@ -21,9 +21,9 @@ export const first_db: ConnectionOptions = {
 
 export const second_db: ConnectionOptions = {
   name: 'second',
-  type: 'mysql',
+  type: 'mongodb',
   host: process.env.DB2_HOST,
-  port: 3309,
+  port: parseInt(process.env.DB2_PORT) || 3306,
   username: process.env.DB2_USERNAME,
   password: process.env.DB2_PASSWORD,
   database: process.env.DB2_SCHEMA,
